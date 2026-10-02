@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-yCmorE9LHffebR9TiV7p6Etz4vqxv57kqnb9QayblFg='">
+<title>Pane – returning to app</title>
+</head>
+<body>
+<p>Returning to Pane…</p>
+<script>
+// Sandbox-only relay. Akoya will not register a localhost redirect URI, so it sends
+// the browser here and this page forwards it to the local dev server. Only the OAuth
+// response parameters are copied, to a fixed target. Nothing is stored or sent elsewhere.
+(function () {
+  var target = "https://localhost:3005/v1/akoya/callback";
+  var src = new URLSearchParams(window.location.search);
+  var out = new URLSearchParams();
+  ["code", "state", "error", "error_description"].forEach(function (k) {
+    if (src.has(k)) out.set(k, src.get(k));
+  });
+  window.location.replace(target + "?" + out.toString());
+})();
+</script>
+</body>
+</html>
